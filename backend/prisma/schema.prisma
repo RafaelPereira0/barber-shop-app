@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum UserRole {
+  CLIENT
+  ADMIN
+  BARBER
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+  FINISHED
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(CLIENT)
+
+  clientAppointments Appointment[] @relation("ClientAppointments")
+  barberAppointments Appointment[] @relation("BarberAppointments")
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  date      DateTime
+  clientId  String
+  barberId  String
+  serviceId Int
+
+  // Kept relations inline to prevent Prisma parser confusion
+  client  User    @relation("ClientAppointments", fields: [clientId], references: [id])
+  barber  User    @relation("BarberAppointments", fields: [barberId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())
+  name         String
+  price        Decimal
+  duration     Int
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
