@@ -2,13 +2,46 @@ import { Request, Response } from "express";
 import userService from "../services/user.service";
 
 class UserController{
-    
-    async register(req: Request, res: Response): Promise<Response>{
-        try{
-            const newUser = await userService.create(req.body)
 
-            return res.status(201).json({message: "Usuário criado com sucesso", result: newUser})
+    async getAllUsers(req: Request, res: Response): Promise<Response> {
+        try{
+            const users = await userService.findAll()
+
+            return res.status(200).json({message: "Usuários encontrados", result: users})
         }catch(err: any){
+            return res.status(400).json({error: err.message})
+        }
+    }
+    
+    async userRegister(req: Request, res: Response): Promise<Response>{
+        try{
+            const newUser = await userService.createUser(req.body)
+
+            return res.status(201).json({message: "Usuário criado com sucesso", result: [newUser.name, newUser.email, newUser.role]})
+        }catch(err: any){
+            return res.status(400).json({error: err.message})
+        }
+    }
+
+    async barberRegister(req: Request, res: Response): Promise<Response>{
+        try{
+            const newBarber = await userService.createBarber(req.body)
+
+            return res.status(201).json({message: "Barbeiro criado com sucesso", result: [newBarber.name, newBarber.email, newBarber.role]})
+        }catch(err: any){
+            return res.status(400).json({error: err.message})
+        }
+    }
+
+    async updateUser(req: Request, res: Response): Promise<Response>{
+        try{
+            const idNumber = Number(req.params.id)
+            const updatedData = req.body
+
+            const updateUser = await userService.updateUser(idNumber, updatedData)
+
+            return res.status(200).json({message: "Usuário atualizado com sucesso", result: updateUser})
+        }catch(err:any){
             return res.status(400).json({error: err.message})
         }
     }
