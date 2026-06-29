@@ -12,3 +12,8 @@ export interface UpdateUserDTO{
     email?: string,
     password?: string
 }
+
+export interface AuthUser {
+    id: number,
+    role: UserRole
+}

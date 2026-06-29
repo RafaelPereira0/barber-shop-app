@@ -1,5 +1,5 @@
 export interface CreateAppointmentDTO {
-    date: string;
+    date: Date;
     clientId: number;
     barberId: number;
     serviceId: number
