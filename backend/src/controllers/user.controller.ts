@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import userService from "../services/user.service";
+import { createUserSchema } from "../validations/user.validation";
 
 class UserController{
 
@@ -15,7 +16,8 @@ class UserController{
     
     async userRegister(req: Request, res: Response): Promise<Response>{
         try{
-            const newUser = await userService.createUser(req.body)
+            const data = createUserSchema.parse(req.body)
+            const newUser = await userService.createUser(data)
 
             return res.status(201).json({message: "Usuário criado com sucesso", result: [newUser.name, newUser.email, newUser.role]})
         }catch(err: any){
@@ -25,7 +27,8 @@ class UserController{
 
     async barberRegister(req: Request, res: Response): Promise<Response>{
         try{
-            const newBarber = await userService.createBarber(req.body)
+            const data = createUserSchema.parse(req.body)
+            const newBarber = await userService.createBarber(data)
 
             return res.status(201).json({message: "Barbeiro criado com sucesso", result: [newBarber.name, newBarber.email, newBarber.role]})
         }catch(err: any){

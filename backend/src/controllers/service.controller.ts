@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import serviceService from "../services/service.service";
+import { createServiceSchema } from "../validations/service.validation";
 
 
 class ServiceController {
@@ -8,14 +9,14 @@ class ServiceController {
     async create(req: Request, res: Response) {
 
         try {
-
+            const data = createServiceSchema.parse(req.body)
             const service =
-                await serviceService.create(req.body);
+                await serviceService.create(data);
 
             return res.status(201).json(service);
 
 
-        } catch (error:any) {
+        } catch (error: any) {
 
             return res.status(400).json({
                 error: error.message
@@ -52,10 +53,10 @@ class ServiceController {
             return res.json(service);
 
 
-        } catch(error:any){
+        } catch (error: any) {
 
             return res.status(404).json({
-                error:error.message
+                error: error.message
             });
 
         }
@@ -82,10 +83,10 @@ class ServiceController {
             return res.json(service);
 
 
-        } catch(error:any){
+        } catch (error: any) {
 
             return res.status(400).json({
-                error:error.message
+                error: error.message
             });
 
         }
@@ -103,16 +104,16 @@ class ServiceController {
             const id = Number(req.params.id);
 
 
-            await serviceService.delete(id);
+            const deleted = await serviceService.delete(id);
 
 
-            return res.status(204).send();
+            return res.status(204).json({ result: deleted, message: "Serviço deletado com sucesso!" });
 
 
-        } catch(error:any){
+        } catch (error: any) {
 
             return res.status(404).json({
-                error:error.message
+                error: error.message
             });
 
         }

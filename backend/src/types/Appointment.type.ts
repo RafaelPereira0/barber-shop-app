@@ -1,6 +1,10 @@
+import { AppointmentStatus } from "@prisma/client";
+
 export interface CreateAppointmentDTO {
     date: Date;
-    clientId: number;
     barberId: number;
-    serviceId: number
+    serviceId: number;
+}
+export interface AppointmentStatusDTO {
+    status: AppointmentStatus
 }

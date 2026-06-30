@@ -1,12 +1,13 @@
-import { User, UserRole } from "@prisma/client";
+import { AppointmentStatus, User, UserRole } from "@prisma/client";
 import appointmentRepository from "../repositories/appointment.repository";
 import userRepository from "../repositories/user.repository";
-import { CreateAppointmentDTO } from "../types/Appointment.type";
+import { AppointmentStatusDTO, CreateAppointmentDTO } from "../types/Appointment.type";
 import { AuthUser } from "../types/User.type";
+import serviceRepository from "../repositories/service.repository";
 
 class AppointmentService {
 
-    async createAppointment(clientId:number, data: CreateAppointmentDTO) {
+    async createAppointment(clientId: number, data: CreateAppointmentDTO) {
         const appointmentDate = new Date(data.date);
 
         if (appointmentDate < new Date()) {
@@ -14,7 +15,7 @@ class AppointmentService {
         }
 
         const barber =
-        await userRepository.findById(data.barberId)
+            await userRepository.findById(data.barberId)
 
         if (!barber) {
             throw new Error("Barbeiro não encontrado")
@@ -24,33 +25,117 @@ class AppointmentService {
             throw new Error("Usuário informado não é barbeiro")
         }
 
-        const conflict =
-            await appointmentRepository.findByBarberAndDate(data.barberId, appointmentDate)
+        const service = await serviceRepository.findById(data.serviceId);
 
-        if (conflict) {
-            throw new Error("Horário indisponível")
+        if (!service) {
+            throw new Error("Serviço não encontrado.");
         }
 
+        const hour = appointmentDate.getHours();
+
+        if (hour < 9 || hour >= 18) {
+            throw new Error("A barbearia funciona apenas das 09:00 às 18:00.");
+        }
+
+        // Não permitir domingo
+        if (appointmentDate.getDay() === 0) {
+            throw new Error("A barbearia não funciona aos domingos.");
+        }
+
+        // Buscar todos os agendamentos do barbeiro no mesmo dia
+        const startDay = new Date(appointmentDate);
+        startDay.setHours(0, 0, 0, 0);
+
+        const endDay = new Date(appointmentDate);
+        endDay.setHours(23, 59, 59, 999);
+
+        const appointments =
+            await appointmentRepository.findByBarberAndDate(
+                data.barberId,
+                startDay,
+                endDay
+            );
+
+        // Horário final do novo agendamento
+        const newStart = appointmentDate;
+
+        const newEnd = new Date(
+            newStart.getTime() + service.duration * 60000
+        );
+
+        for (const appointment of appointments) {
+
+            const existingStart = appointment.date;
+
+            const existingEnd = new Date(
+                existingStart.getTime() +
+                appointment.service.duration * 60000
+            );
+
+            const overlap =
+                newStart < existingEnd &&
+                newEnd > existingStart;
+
+            if (overlap) {
+                throw new Error("O barbeiro já possui um agendamento nesse horário.");
+            }
+        }
+
+        // Criar agendamento
         return appointmentRepository.create({
-
             clientId,
-
             barberId: data.barberId,
-
             serviceId: data.serviceId,
-
             date: appointmentDate
-
-        })
+        });
     }
 
-    async findAll(userid: number, userRole: any){
-        if(userRole === UserRole.CLIENT){
-            return appointmentRepository.findByClient({clientId: userid})  
+    async updateStatus(appointmentId: number, status: AppointmentStatus) {
+        const appointment = await appointmentRepository.findById(appointmentId)
+
+        if (!appointment) {
+            throw new Error("Agendamento não encontrado")
         }
 
-        if(userRole === UserRole.BARBER){
-            return appointmentRepository.findByBarber({barberId: userid})
+        const appointmentUpdated = await appointmentRepository.updateStatus(appointmentId, status)
+
+        return {
+            status: appointmentUpdated.status
+        }
+    }
+
+    async cancelAppointment(appointmentId: number, user: AuthUser) {
+        const appointment = await appointmentRepository.findById(appointmentId)
+
+        if (!appointment) {
+            throw new Error("Agendamento não encontrado")
+        }
+
+        if (
+            user.role === UserRole.CLIENT &&
+            appointment.clientId !== user.id
+        ) {
+            throw new Error("Você não pode cancelar esse agendamento.");
+        }
+
+        if (appointment.status === AppointmentStatus.FINISHED) {
+            throw new Error("Agendamento já finalizado.");
+        }
+
+        return appointmentRepository.updateStatus(
+            appointmentId,
+            AppointmentStatus.CANCELED
+        );
+
+    }
+
+    async findAll(userid: number, userRole: any) {
+        if (userRole === UserRole.CLIENT) {
+            return appointmentRepository.findByClient({ clientId: userid })
+        }
+
+        if (userRole === UserRole.BARBER) {
+            return appointmentRepository.findByBarber({ barberId: userid })
         }
 
         return appointmentRepository.findAll()

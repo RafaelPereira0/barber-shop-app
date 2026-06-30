@@ -47,7 +47,12 @@ class ServiceService {
 
         await this.findById(id);
 
-        return serviceRepository.delete(id);
+        const deletedService = await serviceRepository.delete(id);
+
+        return {
+            id: deletedService.id,
+            name: deletedService.name
+        }
     }
 
 }
