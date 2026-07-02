@@ -1,0 +1,108 @@
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #0f172a; 
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.loginContainer {
+    background: #1e293b; 
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 420px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.brand {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label {
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.field input {
+    padding: 14px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #ffffff;
+    background-color: #0f172a;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 1px #38bdf8;
+}
+
+
+.field input::placeholder {
+    color: #475569;
+}
+
+.error {
+    color: #f87171; 
+    font-size: 13px;
+    margin: 4px 0 0 0;
+    font-weight: 500;
+}
+
+
+.btnSubmit {
+    background-color: #38bdf8;
+    color: #0f172a;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.btnSubmit:hover {
+    background-color: #7dd3fc;
+}
+
+.btnSubmit:active {
+    transform: scale(0.99);
+}

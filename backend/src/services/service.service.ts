@@ -1,3 +1,4 @@
+import { UserRole } from "@prisma/client";
 import serviceRepository from "../repositories/service.repository";
 import { CreateServiceDTO } from "../types/Service.type";
 
@@ -36,16 +37,32 @@ class ServiceService {
         return service;
     }
 
-    async update(id: number, data: Partial<CreateServiceDTO>) {
+    async update(id: number, data: Partial<CreateServiceDTO>, user: UserRole) {
 
-        await this.findById(id);
+        const updatedService = await this.findById(id);
+
+        if (!updatedService) {
+            throw new Error("Serviço não encontrado")
+        }
+
+        if (user === UserRole.CLIENT) {
+            throw new Error("Sem Premissão")
+        }
 
         return serviceRepository.update(id, data);
     }
 
-    async delete(id: number) {
+    async delete(id: number, user: UserRole) {
 
-        await this.findById(id);
+        const service = await this.findById(id);
+
+        if (!service) {
+            throw new Error("Serviço não encontrado")
+        }
+
+        if (user === UserRole.CLIENT) {
+            throw new Error("Sem Premissão")
+        }
 
         const deletedService = await serviceRepository.delete(id);
 

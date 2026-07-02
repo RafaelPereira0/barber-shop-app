@@ -71,12 +71,19 @@ class ServiceController {
         try {
 
             const id = Number(req.params.id);
+            const user = req.user;
 
+            if (!user) {
+                return res.status(401).json({
+                    message: "Usuário não autenticado"
+                });
+            }
 
             const service =
                 await serviceService.update(
                     id,
-                    req.body
+                    req.body,
+                    user.role
                 );
 
 
@@ -103,8 +110,15 @@ class ServiceController {
 
             const id = Number(req.params.id);
 
+            const user = req.user;
 
-            const deleted = await serviceService.delete(id);
+            if (!user) {
+                return res.status(401).json({
+                    message: "Usuário não autenticado"
+                });
+            }
+
+            const deleted = await serviceService.delete(id, user.role);
 
 
             return res.status(204).json({ result: deleted, message: "Serviço deletado com sucesso!" });

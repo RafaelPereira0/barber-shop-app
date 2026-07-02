@@ -1,0 +1,74 @@
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.info h3 {
+    margin: 0 0 8px 0;
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.description {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.price {
+    display: inline-block;
+    color: #10b981; 
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 14px;
+}
+
+.actions button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnEdit {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.btnEdit:hover {
+    background-color: #e2e8f0;
+}
+
+.btnDelete {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.btnDelete:hover {
+    background-color: #fca5a5;
+}
