@@ -1,12 +1,12 @@
 import { User } from "@prisma/client"
 import prisma from "../config/database"
 import { CreateUserDTO } from "../types/Auth.types"
-import { UpdateUserDTO } from "../types/User.type"
+import { UpdateUserDTO, UserResponseDTO } from "../types/User.type"
 
 
 class UserRepository{
 
-    async findAll(): Promise<User[]>{
+    async findAll(): Promise<UserResponseDTO[]>{
         return await prisma.user.findMany()
     }
 
@@ -30,6 +30,14 @@ class UserRepository{
         return await prisma.user.update({
             where: {id},
             data
+        })
+    }
+
+    async deleteUser(id: number){
+        return await prisma.user.delete({
+            where: {
+                id: id
+            }
         })
     }
 }

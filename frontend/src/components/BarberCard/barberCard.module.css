@@ -1,0 +1,112 @@
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Avatar circular com a inicial */
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f1c40f; /* Cor dourada/amarela para destacar a equipa */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 16px;
+}
+
+.info h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.email {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Badges de Roles */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badgeBarber {
+    background: #fef9c3;
+    color: #713f12;
+}
+
+.badgeAdmin {
+    background: #fbcfe8;
+    color: #9d174d;
+}
+
+/* Botões de Ação */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btnEdit {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.btnEdit:hover {
+    background-color: #e2e8f0;
+}
+
+.btnDelete {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.btnDelete:hover {
+    background-color: #fca5a5;
+}

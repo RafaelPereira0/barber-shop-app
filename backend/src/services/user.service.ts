@@ -5,7 +5,7 @@ import { UpdateUserDTO, UserResponseDTO } from "../types/User.type"
 
 class UserService {
 
-    async findAll(): Promise<UserResponseDTO[]>{
+    async findAll(): Promise<UserResponseDTO[]> {
         const allUsers = await userRepository.findAll()
 
         return allUsers.map(user => ({
@@ -25,7 +25,7 @@ class UserService {
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 8)
-        
+
         return await userRepository.create({
             name: data.name,
             email: data.email,
@@ -35,7 +35,7 @@ class UserService {
 
     }
 
-    async createBarber(data: CreateUserDTO){
+    async createBarber(data: CreateUserDTO) {
         const userExists = await userRepository.findByEmail(data.email)
 
         if (userExists) {
@@ -52,13 +52,13 @@ class UserService {
         })
     }
 
-    async updateUser(id:number, data: UpdateUserDTO): Promise<UserResponseDTO>{
+    async updateUser(id: number, data: UpdateUserDTO): Promise<UserResponseDTO> {
         const userExists = await userRepository.findById(id)
-        if(!userExists){
+        if (!userExists) {
             throw new Error("Usuário não encontrado")
         }
 
-        if(data.password){
+        if (data.password) {
             data.password = await bcrypt.hash(data.password, 10)
         }
 
@@ -69,6 +69,22 @@ class UserService {
             name: updatedUser.name,
             email: updatedUser.email,
             role: updatedUser.role
+        }
+    }
+
+    async deleteUser(id: number) {
+        const userExists = await userRepository.findById(id)
+        if (!userExists) {
+            throw new Error("Usuário não encontrado")
+        }
+
+        const deletedUser = await userRepository.deleteUser(id)
+
+        return {
+            id: deletedUser.id,
+            name: deletedUser.name,
+            email: deletedUser.email,
+            role: deletedUser.role
         }
     }
 }

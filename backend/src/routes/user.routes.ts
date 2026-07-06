@@ -10,5 +10,6 @@ userRouter.get('/all', authMiddleware, roleMiddleware(UserRole.ADMIN, UserRole.B
 userRouter.post('/create', userController.userRegister)
 userRouter.post('/create/barber', authMiddleware, roleMiddleware(UserRole.ADMIN), userController.barberRegister)
 userRouter.patch('/update/:id', authMiddleware, userController.updateUser)
+userRouter.delete('/delete/:id' ,authMiddleware, roleMiddleware(UserRole.ADMIN), userController.deleteUser)
 
 export default userRouter

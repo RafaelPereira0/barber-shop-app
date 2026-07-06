@@ -1,0 +1,189 @@
+.container {
+    width: 100%;
+    font-family: sans-serif;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 28px;
+    color: #1e293b;
+    margin: 0;
+}
+
+
+.btnNew {
+    background-color: #10b981;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnNew:hover {
+    background-color: #059669;
+}
+
+
+.btnCancel {
+    background-color: #64748b;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnCancel:hover {
+    background-color: #475569;
+}
+
+
+.formContainer {
+    background: #ffffff;
+    padding: 40px;
+
+    margin: 0 auto 40px auto;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+
+.grid {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+.loading {
+    font-size: 18px;
+    color: #64748b;
+    text-align: center;
+    margin-top: 40px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.tab,
+.tabActive {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #64748b;
+}
+
+.tabActive {
+    color: #3498db;
+    border-bottom: 3px solid #3498db;
+    margin-bottom: -11px;
+}
+
+/* Card Simples Horizontal para Clientes */
+.clientCard {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.clientInfo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.avatarClient {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    font-size: 16px;
+}
+
+.clientInfo h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #1e293b;
+}
+
+.clientInfo p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.btnDeleteInline {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnDeleteInline:hover {
+    background: #fca5a5;
+}
+
+.empty {
+    color: #64748b;
+    text-align: center;
+    margin-top: 24px;
+    width: 100%;
+}

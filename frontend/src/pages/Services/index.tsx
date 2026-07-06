@@ -26,6 +26,7 @@ export default function Services(){
 
     async function handleDelete(id: number){
         try{
+            if (!confirm("Tem certeza que deseja remover este serviço? O processo não poderá ser desfeito.")) return;
             await deleteService(id);
             loadServices();
         }catch(err){
