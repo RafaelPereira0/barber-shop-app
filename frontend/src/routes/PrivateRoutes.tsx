@@ -1,16 +1,25 @@
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import {Navigate, Outlet} from 'react-router-dom'
 
-export default function PrivateRoute(){
-    const { isAuthenticated, loading } = useAuth()
+interface PrivateRouteProps {
+    allowedRoles?: ("ADMIN" | "BARBER" | "CLIENT")[];
+}
 
-    if(loading){
-        return <h2>carregando</h2>
+export default function PrivateRoute({ allowedRoles }: PrivateRouteProps) {
+    const { user, loading } = useAuth();
+    const location = useLocation();
+
+    if (loading) {
+        return <div>Carregando...</div>; 
     }
 
-    if(!isAuthenticated){
-        return <Navigate to='/login' replace/>
+    if (!user) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    return <Outlet/>
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        return <Navigate to="/" replace />; 
+    }
+
+    return <Outlet />;
 }

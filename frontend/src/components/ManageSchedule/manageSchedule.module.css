@@ -1,0 +1,217 @@
+.container {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.header {
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 1.5rem;
+}
+
+.header h1 {
+    color: #1a1a1a;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #666;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+/* Alertas de Feedback */
+.successBox, .errorBox {
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.successBox { 
+    background-color: #ecfdf5; 
+    color: #065f46; 
+    border: 1px solid #a7f3d0;
+}
+
+.errorBox { 
+    background-color: #fef2f2; 
+    color: #991b1b; 
+    border: 1px solid #fca5a5;
+}
+
+/* Lista de Dias - Agora no formato de Grid Separado */
+.scheduleList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Separação generosa entre cada dia */
+}
+
+/* O Card de cada dia */
+.dayRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito sutil ao passar o mouse por cima do Card */
+.dayRow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db;
+}
+
+/* Estilo especial quando o dia está configurado e ativo */
+.rowActive {
+    border-left: 5px solid #1a73e8; /* Barra lateral indicando atividade */
+    background-color: #f8fafc;
+}
+
+.dayInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dayName {
+    font-weight: 600;
+    color: #111827;
+    margin-right: 10px;
+    font-size: 1.15rem;
+}
+
+.statusBadge {
+    font-size: 0.85rem;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    width: fit-content;
+    font-weight: 500;
+}
+
+.rowActive .statusBadge {
+    color: #1e40af;
+    background-color: #dbeafe;
+}
+
+/* Seção de Inputs */
+.timeInputs {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Bastante espaço entre a hora de entrada, saída e botão */
+}
+
+.inputGroup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.inputGroup label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+/* Customização dos seletores de Hora */
+.timeInputs input[type="time"] {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #1f2937;
+    background-color: #ffffff;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+/* Efeito de foco lindo nos inputs */
+.timeInputs input[type="time"]:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+/* Botão Salvar moderno */
+.btnSave {
+    background-color: #1f2937; /* Tom de grafite escuro mais elegante */
+    color: #ffffff;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btnSave:hover {
+    background-color: #111827;
+    transform: scale(1.02);
+}
+
+.btnSave:active {
+    transform: scale(0.98);
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    font-size: 1.1rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Responsividade de alto nível para Celulares */
+@media (max-width: 800px) {
+    .dayRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-right: 15px;
+        padding: 1.5rem;
+    }
+    
+    .timeInputs {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.2rem;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 1.2rem;
+    }
+    
+    .inputGroup {
+        justify-content: space-between;
+    }
+    
+    .timeInputs input[type="time"] {
+        width: 130px;
+    }
+
+    .btnSave {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+}

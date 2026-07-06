@@ -25,13 +25,19 @@ export default function SideBar() {
 
                 {user?.role === "ADMIN" && (
                     <NavLink to="/users" className={styles.link}>
-                        Barbeiros
+                        Equipe/Clientes
                     </NavLink>
                 )}
 
                 <NavLink to="/appointments" className={styles.link}>
                     Agendamentos
                 </NavLink>
+
+                {user?.role !== "CLIENT" && (
+                    <NavLink to="/agenda" className={styles.link}>
+                        Sua Agenda
+                    </NavLink>
+                )}
 
                 <NavLink to="/profile" className={styles.link}>
                     Perfil

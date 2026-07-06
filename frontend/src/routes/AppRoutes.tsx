@@ -7,6 +7,7 @@ import Layout from "../components/Layout";
 import Users from "../pages/Users";
 import Appointments from "../pages/Appointments";
 import Profile from "../pages/Profile";
+import Schedule from "../pages/Schedule";
 
 export default function AppRoutes() {
     return (
@@ -18,9 +19,20 @@ export default function AppRoutes() {
                     <Route element={<Layout />}>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/services" element={<Services />} />
-                        <Route path="/users" element={<Users />} />
                         <Route path="/appointments" element={<Appointments />} />
                         <Route path="/profile" element={<Profile />} />
+
+                    </Route>
+                </Route>
+                <Route element={<PrivateRoute allowedRoles={["ADMIN", "BARBER"]} />}>
+                    <Route element={<Layout />}>
+                        <Route path="/agenda" element={<Schedule />} />
+                    </Route>
+
+                </Route>
+                <Route element={<PrivateRoute allowedRoles={["ADMIN"]} />}>
+                    <Route element={<Layout />}>
+                        <Route path="/users" element={<Users />} />
                     </Route>
                 </Route>
 
