@@ -79,7 +79,7 @@ export default function Services(){
                         service={service} 
                         onEdit={handleEdit} 
                         onDelete={handleDelete} 
-                        canManage={user?.role !== "CLIENT"}
+                        canManage={user?.role === "ADMIN"}
                     />
                 ))}
             </div>

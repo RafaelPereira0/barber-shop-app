@@ -13,6 +13,16 @@ class UserController{
             return res.status(400).json({error: err.message})
         }
     }
+
+    async getBarbers(req: Request, res: Response): Promise<Response> {
+        try{
+            const barbers = await userService.findAllBarbers()
+
+            return res.status(200).json({message: "Usuários encontrados", result: barbers})
+        }catch(err: any){
+            return res.status(400).json({error: err.message})
+        }
+    }
     
     async userRegister(req: Request, res: Response): Promise<Response>{
         try{

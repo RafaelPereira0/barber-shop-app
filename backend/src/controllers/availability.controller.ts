@@ -10,7 +10,7 @@ class AvailabilityController {
             const {dayOfWeek, startTime, endTime} = req.body
             const user = req.user
 
-            if(user?.role !== UserRole.ADMIN && user?.id !== barberId){
+            if(user?.role !== UserRole.ADMIN && Number(user?.id) !== Number(barberId)){
                 return res.status(400).json({error: "Acesso negado. Você só pode mudar sua agenda!"})
             }
 

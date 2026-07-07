@@ -10,6 +10,11 @@ export interface UserType {
     role: UserRole
 }
 
+export interface Barber{
+    name: string,
+    id: number
+}
+
 export interface BarberFormData {
     name: string,
     email: string,

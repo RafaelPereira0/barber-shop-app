@@ -7,6 +7,12 @@ export interface UserResponseDTO {
     email: string
 }
 
+export interface BarberResponseDTO {
+    id: number,
+    name: string,
+    email: string
+}
+
 export interface UpdateUserDTO{
     name?: string,
     email?: string,

@@ -25,3 +25,14 @@ export interface CreateAppointmentData {
     serviceId: number,
     date: string
 }
+
+export interface GetAvailableSlotsParams {
+    barberId: number,
+    date: string,
+    serviceId: number
+}
+
+export interface TimeSlot{
+    time: string,
+    available: boolean
+}

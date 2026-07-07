@@ -1,7 +1,7 @@
 import userRepository from "../repositories/user.repository"
 import { CreateUserDTO } from "../types/Auth.types"
 import bcrypt from "bcryptjs"
-import { UpdateUserDTO, UserResponseDTO } from "../types/User.type"
+import { BarberResponseDTO, UpdateUserDTO, UserResponseDTO } from "../types/User.type"
 
 class UserService {
 
@@ -13,6 +13,16 @@ class UserService {
             name: user.name,
             email: user.email,
             role: user.role
+        }))
+    }
+
+    async findAllBarbers(): Promise<BarberResponseDTO[]> {
+        const allUsers = await userRepository.findAllBarbers()
+
+        return allUsers.map(user => ({
+            id: user.id,
+            name: user.name,
+            email: user.email
         }))
     }
 

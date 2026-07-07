@@ -7,6 +7,7 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 const userRouter = Router()
 
 userRouter.get('/all', authMiddleware, roleMiddleware(UserRole.ADMIN, UserRole.BARBER), userController.getAllUsers)
+userRouter.get('/barber', authMiddleware, userController.getBarbers)
 userRouter.post('/create', userController.userRegister)
 userRouter.post('/create/barber', authMiddleware, roleMiddleware(UserRole.ADMIN), userController.barberRegister)
 userRouter.patch('/update/:id', authMiddleware, userController.updateUser)

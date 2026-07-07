@@ -10,6 +10,14 @@ class UserRepository{
         return await prisma.user.findMany()
     }
 
+    async findAllBarbers(): Promise<UserResponseDTO[]>{
+        return await prisma.user.findMany({
+            where: {
+                role: "BARBER"
+            }
+        })
+    }
+
     async findById(id: number): Promise<User | null>{
         return await prisma.user.findUnique({where: {
             id

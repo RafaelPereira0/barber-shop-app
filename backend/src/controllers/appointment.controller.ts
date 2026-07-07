@@ -11,9 +11,9 @@ class AppointmentController {
             const data = createAppointmentSchema.parse(req.body)
 
             const appointment = await appointmentService.createAppointment(
-                    clientId,
-                    data
-                )
+                clientId,
+                data
+            )
 
             return res.status(201).json({ result: appointment, message: "Agendamento criado com sucesso!" })
         } catch (err: any) {
@@ -21,19 +21,23 @@ class AppointmentController {
         }
     }
 
-    async updateStatus(req: Request, res: Response): Promise<Response>{
-        try{
+    async updateStatus(req: Request, res: Response): Promise<Response> {
+        try {
             const idAppointment = Number(req.params.id)
-            const updatedAppointment = await appointmentService.updateStatus(idAppointment, req.body.status )
+            const user: AuthUser = {
+                id: Number(req.user!.id),
+                role: req.user!.role
+            };
+            const updatedAppointment = await appointmentService.updateStatus(idAppointment, req.body.status, user)
 
             return res.status(200).json(updatedAppointment)
-        }catch(err: any){
-            return res.status(400).json({error: err.message})
+        } catch (err: any) {
+            return res.status(400).json({ error: err.message })
         }
     }
 
-    async cancelAppointment(req: Request, res: Response): Promise<Response>{
-        try{
+    async cancelAppointment(req: Request, res: Response): Promise<Response> {
+        try {
             const idAppointment = Number(req.params.id)
             const user: AuthUser = {
                 id: Number(req.user!.id),
@@ -42,9 +46,9 @@ class AppointmentController {
 
             const appointment = await appointmentService.cancelAppointment(idAppointment, user)
 
-            return res.status(200).json({result: appointment, message: "Status do agendamento atualizado!"})
-        }catch(err: any){
-            return res.status(400).json({error: err.message})
+            return res.status(200).json({ result: appointment, message: "Status do agendamento atualizado!" })
+        } catch (err: any) {
+            return res.status(400).json({ error: err.message })
         }
     }
 
@@ -60,6 +64,7 @@ class AppointmentController {
             return res.status(400).json({ error: err.message })
         }
     }
+
 }
 
 export default new AppointmentController()

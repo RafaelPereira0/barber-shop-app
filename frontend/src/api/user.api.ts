@@ -7,6 +7,12 @@ export async function getUsers(): Promise<UserType[]> {
     return response.data.result
 }
 
+export async function getBarbers(): Promise<UserType[]> {
+    const response = await api.get("/user/barber")
+
+    return response.data.result
+}
+
 export async function createBarber(data: BarberFormData) {
     const response = await api.post("/user/create/barber", data)
 

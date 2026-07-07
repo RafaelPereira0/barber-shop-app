@@ -1,0 +1,216 @@
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #333;
+}
+
+.container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.tableResponsive {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.table th {
+    background-color: #f9fafb;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #1f2937;
+    vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    text-align: center;
+}
+
+.confirmed {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.canceled {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+}
+
+.finished {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0; 
+}
+
+.cancelBtn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cancelBtn:hover {
+    background-color: #dc2626;
+}
+
+.cancelBtn:active {
+    transform: scale(0.98);
+}
+
+/* Textos auxiliares */
+.disabledText {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.warningText {
+    color: #6b7280;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.alertBanner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #fffbeb;
+    border-left: 4px solid #d97706;
+    color: #92400e;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.alertBanner strong {
+    color: #78350f;
+}
+
+.timeExpiredText {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background-color: #f3f4f6;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid #e5e7eb;
+    cursor: not-allowed;
+}
+
+.actionsContainer {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.confirmBtn {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.confirmBtn:hover {
+    background-color: #1d4ed8;
+}
+
+.confirmBtn:active {
+    transform: scale(0.98);
+}
+
+.finishBtn {
+    background-color: #16a34a;
+    color: #ffffff;
+    border: none;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.finishBtn:hover {
+    background-color: #15803d;
+}
+
+.finishBtn:active {
+    transform: scale(0.98); 
+}
+
+.finishedText {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background-color: #f0fdf4; 
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #bbf7d0;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .table th, .table td {
+        padding: 0.75rem 1rem;
+    }
+}

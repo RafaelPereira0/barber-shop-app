@@ -10,5 +10,7 @@ availabilityRouter.use(authMiddleware)
 availabilityRouter.get('/all', authMiddleware, availabilityController.getAvailableSlots)
 availabilityRouter.post('/create/:barberId', authMiddleware, roleMiddleware(UserRole.ADMIN, UserRole.BARBER), availabilityController.setAvailability)
 availabilityRouter.get('/barber/:barberId', authMiddleware, availabilityController.getBarberAvailability)
+availabilityRouter.get('/slots', authMiddleware, availabilityController.getAvailableSlots)
+
 
 export default availabilityRouter

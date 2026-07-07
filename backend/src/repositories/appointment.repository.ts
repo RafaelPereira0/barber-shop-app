@@ -34,8 +34,8 @@ class AppointmentRepository {
         return await prisma.appointment.findMany({
             where: {
                 barberId: barberId,
-                
-                date:{
+
+                date: {
                     gte: dateStart,
                     lte: dateEnd
                 },
@@ -47,15 +47,21 @@ class AppointmentRepository {
                     ]
                 }
             },
-            include: { service: true}
-            
+            include: { service: true }
+
         })
     }
 
     async findByClient(data: { clientId: number }) {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
         return await prisma.appointment.findMany({
             where: {
-                clientId: data.clientId
+                clientId: data.clientId,
+                date: {
+                    gte: hoje
+                }
             }, include: {
                 barber: true,
                 service: true
@@ -64,9 +70,15 @@ class AppointmentRepository {
     }
 
     async findByBarber(data: { barberId: number }) {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
         return await prisma.appointment.findMany({
             where: {
-                barberId: data.barberId
+                barberId: data.barberId,
+                date: {
+                    gte: hoje
+                }
             }, include: {
                 client: true,
                 service: true

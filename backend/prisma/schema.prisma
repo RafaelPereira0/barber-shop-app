@@ -42,8 +42,8 @@ model Appointment {
   serviceId Int
 
   // Kept relations inline to prevent Prisma parser confusion
-  client  User    @relation("ClientAppointments", fields: [clientId], references: [id])
-  barber  User    @relation("BarberAppointments", fields: [barberId], references: [id])
+  client  User    @relation("ClientAppointments", fields: [clientId], references: [id], onDelete: Cascade)
+  barber  User    @relation("BarberAppointments", fields: [barberId], references: [id], onDelete: Cascade)
   service Service @relation(fields: [serviceId], references: [id])
 }
 

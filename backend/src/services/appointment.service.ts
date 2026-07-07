@@ -90,13 +90,25 @@ class AppointmentService {
         });
     }
 
-    async updateStatus(appointmentId: number, status: AppointmentStatus) {
+    async updateStatus(appointmentId: number, status: AppointmentStatus, user: AuthUser) {
         const appointment = await appointmentRepository.findById(appointmentId)
 
         if (!appointment) {
             throw new Error("Agendamento não encontrado")
         }
 
+        if ((status === AppointmentStatus.CONFIRMED || status === AppointmentStatus.FINISHED) && user.role === UserRole.CLIENT) {
+            throw new Error("Clientes não têm permissão para confirmar ou finalizar agendamentos.")
+        }
+
+        if (user.role === UserRole.BARBER && appointment.barberId !== user.id) {
+            throw new Error("Você não pode gerenciar o agendamento de outro barbeiro.")
+        }
+
+        if (status === AppointmentStatus.CANCELED && user.role === UserRole.CLIENT && appointment.clientId !== user.id) {
+            throw new Error("Você não pode cancelar o agendamento de outra pessoa.")
+        }
+        
         const appointmentUpdated = await appointmentRepository.updateStatus(appointmentId, status)
 
         return {
@@ -120,6 +132,17 @@ class AppointmentService {
 
         if (appointment.status === AppointmentStatus.FINISHED) {
             throw new Error("Agendamento já finalizado.");
+        }
+
+        if (user.role === UserRole.CLIENT) {
+            const agora = new Date();
+            const dataAgendamento = new Date(appointment.date);
+
+            const diferencaEmHoras = (dataAgendamento.getTime() - agora.getTime()) / (1000 * 60 * 60);
+
+            if (diferencaEmHoras < 2) {
+                throw new Error("Agendamentos só podem ser cancelados com até 2 horas de antecedência.");
+            }
         }
 
         return appointmentRepository.updateStatus(
