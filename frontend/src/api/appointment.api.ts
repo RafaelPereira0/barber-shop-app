@@ -4,7 +4,7 @@ import { api } from "./axios";
 export async function getAppointments(): Promise<AppointmentType[]>{
     const response = await api.get("/appointment/all")
 
-    return response.data
+    return response.data.result
 }
 
 export async function createAppointment(data: CreateAppointmentData) {
