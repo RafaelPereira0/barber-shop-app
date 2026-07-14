@@ -27,6 +27,7 @@ class UserController{
     async userRegister(req: Request, res: Response): Promise<Response>{
         try{
             const data = createUserSchema.parse(req.body)
+
             const newUser = await userService.createUser(data)
 
             return res.status(201).json({message: "Usuário criado com sucesso", result: [newUser.name, newUser.email, newUser.role]})
@@ -38,6 +39,7 @@ class UserController{
     async barberRegister(req: Request, res: Response): Promise<Response>{
         try{
             const data = createUserSchema.parse(req.body)
+
             const newBarber = await userService.createBarber(data)
 
             return res.status(201).json({message: "Barbeiro criado com sucesso", result: [newBarber.name, newBarber.email, newBarber.role]})
@@ -65,7 +67,7 @@ class UserController{
             
             const deletedUser = await userService.deleteUser(idNumber)
 
-            return res.status(200).json({message: "Usuário deletadocom sucesso", result: deletedUser})
+            return res.status(200).json({message: "Usuário deletado com sucesso", result: deletedUser})
         }catch(err:any){
             return res.status(400).json({error: err.message})
         }

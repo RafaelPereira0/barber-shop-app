@@ -1,0 +1,80 @@
+.clientCard {
+  background-color: #f4f4f6; 
+  
+  border: 1px solid #e1e1e6; 
+  border-radius: 12px;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.clientCard:hover {
+  transform: translateY(-4px);
+  background-color: #ffffff; 
+  border-color: #ff9000;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.clientInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+.avatarClient {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #ff9000; 
+  color: #ffffff; 
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 6px rgba(255, 144, 0, 0.3);
+}
+
+.details h4 {
+  color: #1c1c1e;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.details p {
+  color: #5c5c64;
+  font-size: 14px;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnDelete {
+  background: transparent;
+  border: none;
+  color: #c53030; 
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btnDelete:hover {
+  background-color: rgba(197, 48, 48, 0.1); 
+  color: #e53e3e;
+}

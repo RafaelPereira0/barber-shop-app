@@ -1,4 +1,4 @@
-import type { BarberFormData, UserType } from "../types/user";
+import type { UserFormData, UserType } from "../types/user";
 import { api } from "./axios";
 
 export async function getUsers(): Promise<UserType[]> {
@@ -13,13 +13,20 @@ export async function getBarbers(): Promise<UserType[]> {
     return response.data.result
 }
 
-export async function createBarber(data: BarberFormData) {
+export async function createBarber(data: UserFormData) {
     const response = await api.post("/user/create/barber", data)
 
     return response.data
 }
 
-export async function updateUser(id: number, data: Partial<BarberFormData>) {
+export async function createUser(data :UserFormData) {
+    const response = await api.post("user/create", data)
+    console.log('api')
+    console.log(response)
+    return response.data
+}
+
+export async function updateUser(id: number, data: Partial<UserFormData>) {
     const response = await api.patch(`/user/update/${id}`, data)
 
     return response.data

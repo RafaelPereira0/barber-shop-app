@@ -9,13 +9,14 @@ import Profile from "../pages/Profile";
 import Schedule from "../pages/Schedule";
 import NewAppointments from "../pages/NewAppointments";
 import Appointments from "../pages/Appointments";
+import { Register } from "../pages/Register";
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<Login />} />
-
+                <Route path="/register" element={<Register/>}/>
                 <Route element={<PrivateRoute />}>
                     <Route element={<Layout />}>
                         <Route path="/" element={<Dashboard />} />

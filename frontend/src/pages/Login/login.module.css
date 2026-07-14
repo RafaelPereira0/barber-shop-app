@@ -10,6 +10,51 @@
     padding: 20px;
 }
 
+
+.passwordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px; 
+}
+
+
+.forgotPasswordLink {
+  font-size: 13px;
+  color: #ff9000; 
+  text-decoration: none;
+}
+
+.forgotPasswordLink:hover {
+  text-decoration: underline;
+}
+
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  border-top: 1px solid #29292e; 
+  padding-top: 20px;
+}
+
+.footer p {
+  color: #8d8d99;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.btnRegister {
+  color: #ff9000;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 15px;
+  display: inline-block;
+}
+
+.btnRegister:hover {
+  text-decoration: underline;
+}
+
 .loginContainer {
     background: #1e293b; 
     padding: 40px;

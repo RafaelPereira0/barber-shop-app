@@ -59,7 +59,6 @@ export default function Appointments() {
             const status = app.status
 
             if (activeTab === "TODAY") {
-                console.log(appDataString === hojeString && status !== "FINISHED")
                 return appDataString === hojeString && status !== "FINISHED"
             }
             if (activeTab === "UPCOMING") {
@@ -163,7 +162,7 @@ export default function Appointments() {
             )}
 
             {appointments.length === 0 ? (
-                <p>Você não possui nenhum agendamento marcado.</p>
+                <p className={styles.emptyMessage}>Você não possui nenhum agendamento marcado.</p>
             ) : (
                 <>
                     {filteredAppointments.length === 0 ?

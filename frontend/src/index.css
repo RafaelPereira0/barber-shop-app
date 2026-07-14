@@ -11,3 +11,19 @@ body, html, #root {
     padding: 0;
     overflow-x: hidden;
 }
+
+.barber-swal-popup {
+  border-radius: 12px !important;
+  border: 1px solid #29292e !important;
+  font-family: sans-serif !important;
+}
+
+.barber-swal-title {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+}
+
+.barber-swal-text {
+  color: #8d8d99 !important;
+  font-size: 15px !important;
+}

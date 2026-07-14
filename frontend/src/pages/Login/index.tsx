@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../hooks/useAuth"
 import { LoginSchema, type LoginFormData } from "../../schema/login.schema"
-import styles from "./login.module.css"; 
+import styles from "./login.module.css";
 
-export default function Login(){
+export default function Login() {
     const navigate = useNavigate()
     const { login } = useAuth()
 
@@ -17,11 +17,11 @@ export default function Login(){
         resolver: zodResolver(LoginSchema)
     })
 
-    async function onSubmit(data: LoginFormData){
+    async function onSubmit(data: LoginFormData) {
         try {
             await login(data.email, data.password)
             navigate('/')
-        } catch(err) {
+        } catch (err) {
             console.log(err)
         }
     }
@@ -36,7 +36,7 @@ export default function Login(){
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                     <div className={styles.field}>
                         <label>E-mail</label>
-                        <input placeholder="seu@email.com" {...register("email")}/>
+                        <input placeholder="seu@email.com" {...register("email")} />
                         {errors.email && (
                             <p className={styles.error}>{errors.email.message}</p>
                         )}
@@ -44,7 +44,7 @@ export default function Login(){
 
                     <div className={styles.field}>
                         <label>Senha</label>
-                        <input type="password" placeholder="••••••••" {...register("password")}/>
+                        <input type="password" placeholder="••••••••" {...register("password")} />
                         {errors.password && (
                             <p className={styles.error}>{errors.password.message}</p>
                         )}
@@ -53,7 +53,16 @@ export default function Login(){
                     <button type="submit" className={styles.btnSubmit}>
                         Entrar
                     </button>
+                    <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                        Esqueci minha senha
+                    </Link>
                 </form>
+                <div className={styles.footer}>
+                    <p>Não tem uma conta?</p>
+                    <Link to="/register" className={styles.btnRegister}>
+                        Criar Conta!
+                    </Link>
+                </div>
             </div>
         </div>
     )

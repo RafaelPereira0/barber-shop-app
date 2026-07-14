@@ -1,0 +1,135 @@
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #0f172a; 
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+
+.registerContainer {
+    background: #1e293b; 
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 420px;
+}
+
+.header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  color: #8d8d99;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: #e1e1e6;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  background-color: #121214;
+  border: 1px solid #29292e;
+  border-radius: 4px;
+  color: #ffffff;
+  padding: 16px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: #ff9000;
+}
+
+.field input::placeholder {
+  color: #8c8c8c;
+}
+
+
+.error {
+  color: #f75a68; 
+  font-size: 12px;
+  margin: 0;
+}
+
+
+.btnSubmit {
+  background-color: #ff9000; 
+  color: #121214;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  margin-top: 10px;
+}
+
+.btnSubmit:hover:not(:disabled) {
+  background-color: #e68000;
+}
+
+.btnSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  border-top: 1px solid #29292e;
+  padding-top: 20px;
+}
+
+.footer p {
+  color: #8d8d99;
+  font-size: 14px;
+  margin: 0 0 8px 0;
+}
+
+.btnLogin {
+  color: #ff9000;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 15px;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+.btnLogin:hover {
+  text-decoration: underline;
+  color: #e68000;
+}

@@ -238,7 +238,7 @@
 
 .emptyMessage {
     color: #6b7280;
-    font-style: italic;
+    font-style:oblique;
     padding: 2rem 0;
     text-align: center;
 }

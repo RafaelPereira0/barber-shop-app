@@ -5,6 +5,7 @@ import { createService, updateService } from "../../api/services.api"
 import type { ServiceType } from "../../types/service";
 import { useEffect } from "react";
 import styles from "./serviceForm.module.css";
+import { toast } from "sonner";
 
 interface Props {
     service?: ServiceType | null;
@@ -29,8 +30,8 @@ export default function ServiceForm({ service, onSuccess }: Props) {
             }
 
             onSuccess()
-        } catch (err) {
-            console.log(err)
+        } catch (err: any) {
+            toast.error(err.response.data.error || "Ocorreu um erro!");
         }
     }
 
@@ -42,7 +43,7 @@ export default function ServiceForm({ service, onSuccess }: Props) {
                 price: service.price
             })
         } else {
-            reset({ name: "", duration: undefined, price: undefined }) // Limpa o form ao clicar em Novo
+            reset({ name: "", duration: undefined, price: undefined })
         }
     }, [service, reset])
 

@@ -5,6 +5,9 @@ import { deleteUser, getUsers } from "../../api/user.api";
 import type { UserType } from "../../types/user";
 import BarberForm from "../../components/BarberForm/BarberForm";
 import BarberCard from "../../components/BarberCard/barberCard";
+import { toast } from "sonner";
+import { ClientCard } from "../../components/ClientCard/clientCard";
+import { showConfirmModal } from "../../utils/confirmModal";
 
 export default function Users() {
     const { user } = useAuth();
@@ -19,8 +22,8 @@ export default function Users() {
         try {
             const response = await getUsers();
             setUsers(response);
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            toast.error(err.response.data.error || "Ocorreu um erro!");
         } finally {
             setLoading(false);
         }
@@ -32,12 +35,19 @@ export default function Users() {
     }
 
     async function handleDelete(id: number) {
+        const confirmed = await showConfirmModal({
+            title: "Deseja remover este usuário?",
+            text: "O usuário será permanentemente excluído do sistema",
+            confirmButtonText: "Excluir"
+        })
+
+        if(!confirmed) return
         try{
-            if (!confirm("Tem certeza que deseja remover este usuário? O processo não pode ser desfeito.")) return;
-            await deleteUser(id)
+            const response = await deleteUser(id)
+            toast.success(response.message || "Usuário deletado com sucesso!")
             loadUsers()
-        }catch(err){
-            console.log(err)
+        }catch(err: any){
+            toast.error(err.response.data.error || "Ocorreu um erro!");
         }
     }
 
@@ -48,7 +58,7 @@ export default function Users() {
 
     const barbers = users.filter((u) => u.role === "BARBER" || u.role === "ADMIN")
     const clients = users.filter((u) => u.role === "CLIENT")
-    console.log(clients)
+  
     if (loading) return <div className={styles.loading}>Carregando serviços...</div>;
 
     return (
@@ -105,17 +115,12 @@ export default function Users() {
                         <p className={styles.empty}>Nenhum cliente cadastrado</p>
                     ) : (
                         clients.map((c) => (
-                            <div key={c.id} className={styles.clientCard}>
-                                <div className={styles.clientInfo}>
-                                    <span className={styles.avatarClient}>
-                                        {c.name.toUpperCase()}
-                                    </span>
-                                    <div>
-                                        <h4>{c.name}</h4>
-                                        <p>{c.email}</p>
-                                    </div>
-                                </div>  
-                            </div>
+                            <ClientCard
+                                key={c.id}
+                                client={c}
+                                onDelete={handleDelete}
+                                canManage={user?.role === "ADMIN"}
+                            />
                         ))
                     )
                 )}

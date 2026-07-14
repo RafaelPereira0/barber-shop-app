@@ -2,6 +2,7 @@ import userRepository from "../repositories/user.repository"
 import { CreateUserDTO } from "../types/Auth.types"
 import bcrypt from "bcryptjs"
 import { BarberResponseDTO, UpdateUserDTO, UserResponseDTO } from "../types/User.type"
+import { emailValidator } from "../utils/validateEmail"
 
 class UserService {
 
@@ -34,13 +35,19 @@ class UserService {
             throw new Error("E-mail já cadastrado!")
         }
 
+        const validEmail = await emailValidator(data.email)
+
+        if (!validEmail) {
+            throw new Error("E-mail informado é invalido!")
+        }
+
         const hashedPassword = await bcrypt.hash(data.password, 8)
 
         return await userRepository.create({
             name: data.name,
             email: data.email,
             password: hashedPassword,
-            role: data.role
+            role: data.role || "CLIENT"
         })
 
     }
@@ -50,6 +57,12 @@ class UserService {
 
         if (userExists) {
             throw new Error("E-mail já cadastrado!")
+        }
+
+        const validEmail = await emailValidator(data.email)
+
+        if (!validEmail) {
+            throw new Error("E-mail informado é invalido!")
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 8)

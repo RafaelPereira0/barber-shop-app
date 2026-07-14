@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import type { BarberFormData, UserType } from "../../types/user";
+import type {  UserFormData, UserType } from "../../types/user";
 import { createBarber, updateUser } from "../../api/user.api";
 import styles from './barberForm.module.css'
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface props {
     barber?: UserType | null,
@@ -15,12 +16,12 @@ export default function BarberForm({ barber, onSuccess }: props) {
         handleSubmit,
         reset,
         formState: { errors }
-    } = useForm<BarberFormData>()
+    } = useForm<UserFormData>()
 
-    async function onSubmit(data: BarberFormData) {
+    async function onSubmit(data: UserFormData) {
         try {
             if (barber) {
-                const payload: Partial<BarberFormData> = { ...data };
+                const payload: Partial<UserFormData> = { ...data };
 
                 if (!payload.password || payload.password.trim() === "") {
                     delete payload.password;
@@ -32,8 +33,8 @@ export default function BarberForm({ barber, onSuccess }: props) {
             }
             reset(),
                 onSuccess()
-        } catch (err) {
-            console.log(err)
+        } catch (err: any) {
+            toast.error(err.response.data.error || "Ocorreu um erro!");
         }
     }
 

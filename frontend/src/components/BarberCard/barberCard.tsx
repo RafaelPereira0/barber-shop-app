@@ -9,11 +9,18 @@ interface BarberCardProps{
 }
 
 export default function BarberCard({barber, onEdit, canManage, onDelete}: BarberCardProps){
+    const initials = barber.name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
     return(
         <div className={styles.card}>
             <div className={styles.info}>
                 <span className={styles.avatar}>
-                    {barber.name.toUpperCase()}
+                    {initials}
                 </span>
 
                 <div>

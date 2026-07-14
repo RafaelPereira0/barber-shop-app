@@ -15,7 +15,13 @@ export interface Barber{
     id: number
 }
 
-export interface BarberFormData {
+export interface Client {
+    id: number,
+    name: string,
+    email: string
+}
+
+export interface UserFormData {
     name: string,
     email: string,
     password: string
