@@ -10,6 +10,8 @@ import Schedule from "../pages/Schedule";
 import NewAppointments from "../pages/NewAppointments";
 import Appointments from "../pages/Appointments";
 import { Register } from "../pages/Register";
+import { ForgotPassword } from "../pages/Password/ForgotPassword";
+import { ResetPassword } from "../pages/Password/ResetPassword";
 
 export default function AppRoutes() {
     return (
@@ -17,6 +19,8 @@ export default function AppRoutes() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/forgot-password"  element={<ForgotPassword/>}/>
+                <Route path="/reset-password"  element={<ResetPassword/>}/>
                 <Route element={<PrivateRoute />}>
                     <Route element={<Layout />}>
                         <Route path="/" element={<Dashboard />} />

@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.routes"
 import servicesRouter from "./routes/services.routes"
 import cors from 'cors'
 import availabilityRouter from "./routes/availability.routes"
+import resetPass from "./routes/resetPass.routes"
 
 const app = express()
 
@@ -16,5 +17,6 @@ app.use('/appointment', appointmentsRouter)
 app.use('/service', servicesRouter)
 app.use('/login', authRouter)
 app.use('/availability', availabilityRouter)
+app.use('/password', resetPass)
 
 export default app
