@@ -25,3 +25,4 @@ Seguindo o princípio de **Responsabilidade Única (SRP)**:
 
 - **Frontend:** React, TypeScript, Vite, Axios, React Router Dom.
 - **Backend:** Node.js, Express, TypeScript, Prisma ORM, JWT, BcryptJS, Cors.
+- **Docker**
