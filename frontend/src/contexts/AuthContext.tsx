@@ -1,74 +1,69 @@
 import { createContext, useEffect, useState } from "react";
 import type { AuthContextData, User } from "../types/auth";
 import { login as loginAuth } from "../api/auth.api";
+import { setAccessToken } from "../api/token";
+import { api } from "../api/axios";
 
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const [user, setUser] = useState<User | null>(null);
-
     const [token, setToken] = useState<string | null>(null);
-
     const [loading, setLoading] = useState(true);
 
     const isAuthenticated = !!token;
 
     const login = async (email: string, password: string) => {
 
-    const response = await loginAuth(email, password);
+        const response = await loginAuth(email, password);
+
+        const { token, user } = response;
 
 
-    const { token, user } = response.result;
+        setUser(user);
+        setToken(token);
+        setAccessToken(token)
 
-
-    setUser(user);
-    setToken(token);
-
-
-    localStorage.setItem("token", token);
-
-    localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-    );
     };
 
     const logout = () => {
 
         setUser(null);
         setToken(null);
-
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        setAccessToken(null)
     };
 
-    useEffect(() => {
+    async function restore() {
+        try {
+            const response = await api.post('/login/refresh')
 
-        const storedToken = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
+            const { accessToken, user } = response.data;
 
-
-        if (
-            storedToken &&
-            storedUser &&
-            storedUser !== "undefined"
-        ) {
-
-            setToken(storedToken);
-            setUser(JSON.parse(storedUser));
-
-        } else {
-
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-
+            setToken(accessToken)
+            setAccessToken(accessToken)
+            setUser(user)
+        } catch {
+            setUser(null);
+            setToken(null);
+            setAccessToken(null)
+        }finally{
+            setLoading(false)
         }
+    }
 
 
-        setLoading(false);
-
+    useEffect(() => {
+        restore()
     }, []);
+
+    useEffect(() => {
+        window.addEventListener('logout', logout)
+
+        return () => {
+            window.removeEventListener('logout', logout)
+        }
+    },[])
 
     return (
         <AuthContext.Provider

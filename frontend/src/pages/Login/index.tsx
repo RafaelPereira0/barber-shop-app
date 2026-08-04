@@ -19,7 +19,8 @@ export default function Login() {
 
     async function onSubmit(data: LoginFormData) {
         try {
-            await login(data.email, data.password)
+            const response = await login(data.email, data.password)
+            console.log(response)
             navigate('/')
         } catch (err) {
             console.log(err)

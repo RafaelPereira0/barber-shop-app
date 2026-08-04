@@ -1,9 +1,11 @@
+import { User } from "@prisma/client"
 import userRepository from "../repositories/user.repository"
 import { LoginDTO } from "../types/Auth.types"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
-const JWT = process.env.JWT_SECRET || "9f8a7b6c5d4e3f2a1b9c8d7e6f5a4b3c"
+const JWT = process.env.JWT_SECRET
+const REFRESH_TOKEN = process.env.REFRESH_JWT_SECRET
 
 class AuthService{
 
@@ -15,10 +17,16 @@ class AuthService{
         const passwordValid = await bcrypt.compare(credentials.password, user.password)
         if(!passwordValid) throw new Error("Email ou senha inválidos")
 
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             {id: user.id, role: user.role},
-            JWT,
-            {expiresIn: '1d'}
+            JWT!,
+            {expiresIn: '15m'}
+        )
+
+        const refreshToken = jwt.sign(
+            {id: user.id, role: user.role},
+            REFRESH_TOKEN!,
+            {expiresIn: '7d'}
         )
 
         return {
@@ -28,8 +36,32 @@ class AuthService{
                 email: user.email,
                 role: user.role
             },
-            token
+            accessToken,
+            refreshToken
         }
+    }
+
+    async refresh(refreshToken: string): Promise<{newAccessToken: string, user: User}>{
+        return new Promise((resolve, reject) => {
+            jwt.verify(refreshToken, REFRESH_TOKEN!, async (err: any, decoded: any) => {
+            if(err) return reject(new Error("Refresh inválido"))
+
+            const user = await userRepository.findById(decoded.id);
+
+            if (!user) {
+                    return reject(new Error("Usuário não encontrado"));
+            }
+
+            const newAccessToken = jwt.sign({
+                id: user.id, name: user.name, email: user.email, role: user.role
+            }, JWT!, { expiresIn: '15m'})
+
+            resolve({
+                newAccessToken,
+                user
+            }) 
+        })
+        })
     }
 }
 
