@@ -27,7 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     };
 
-    const logout = () => {
+    const logout = async () => {
+        await api.post('/login/logout')
 
         setUser(null);
         setToken(null);
@@ -47,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(null);
             setToken(null);
             setAccessToken(null)
-        }finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -58,12 +59,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     useEffect(() => {
-        window.addEventListener('logout', logout)
+
+        const handleLogout = () => {
+            logout();
+        };
+
+        window.addEventListener("logout", handleLogout);
 
         return () => {
-            window.removeEventListener('logout', logout)
-        }
-    },[])
+            window.removeEventListener("logout", handleLogout);
+        };
+
+    }, []);
 
     return (
         <AuthContext.Provider

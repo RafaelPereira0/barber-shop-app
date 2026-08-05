@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { setAccessToken } from './token'
+import { setAccessToken, getAccessToken } from './token'
 import { emitLogout } from './authEvents'
 
 export const api = axios.create({
@@ -8,7 +8,7 @@ export const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token")
+    const token = getAccessToken()
 
     if(token){
         config.headers.Authorization = `Bearer ${token}`
