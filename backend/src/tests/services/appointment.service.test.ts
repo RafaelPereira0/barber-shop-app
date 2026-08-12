@@ -363,7 +363,7 @@ describe("AppointmentService test", () => {
         }
 
         const data = {
-            date: new Date("2026-08-12T02:00:00"),
+            date: new Date("2026-08-13T02:00:00"),
             barberId: 2,
             serviceId: 999
         }
@@ -374,9 +374,11 @@ describe("AppointmentService test", () => {
         vi.mocked(serviceRepository.findById)
             .mockResolvedValue(service as any)
 
-
-        await expect(appointmentService.createAppointment(10, data))
-            .rejects.toThrow("A barbearia funciona apenas das 09:00 às 18:00.")
+        await expect(
+            appointmentService.createAppointment(10, data)
+        ).rejects.toThrow(
+            "A barbearia funciona apenas das 09:00 às 18:00."
+        )
 
         expect(serviceRepository.findById)
             .toHaveBeenCalledWith(999)
@@ -460,10 +462,10 @@ describe("AppointmentService test", () => {
 
         vi.mocked(appointmentRepository.findByBarberAndDate)
             .mockResolvedValue([{
-                id:5,
-                clientId:20,
-                barberId:2,
-                serviceId:1,
+                id: 5,
+                clientId: 20,
+                barberId: 2,
+                serviceId: 1,
                 date: new Date("2026-08-12T10:00:00"),
                 status: AppointmentStatus.PENDING,
                 service: {
