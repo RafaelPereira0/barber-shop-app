@@ -36,7 +36,7 @@ describe("AppointmentService test", () => {
     })
 
     it("shoud create new appointment", async () => {
-        const date = new Date("2026-08-12T10:00:00")
+        const date = new Date("2026-12-12T10:00:00")
 
         const barber = {
             id: 2,
@@ -278,7 +278,7 @@ describe("AppointmentService test", () => {
 
     it("creating - should throw error when barber does not exists", async () => {
         const data = {
-            date: new Date("2026-08-12T10:00:00"),
+            date: new Date("2026-12-12T10:00:00"),
             barberId: 999,
             serviceId: 1
         }
@@ -299,7 +299,7 @@ describe("AppointmentService test", () => {
 
     it("creating - should throw error when user is not barber", async () => {
         const data = {
-            date: new Date("2026-08-12T10:00:00"),
+            date: new Date("2026-12-12T10:00:00"),
             barberId: 2,
             serviceId: 1,
             role: UserRole.CLIENT
@@ -320,7 +320,7 @@ describe("AppointmentService test", () => {
 
     it("creating - should throw error when service does not exists", async () => {
         const data = {
-            date: new Date("2026-08-12T10:00:00"),
+            date: new Date("2026-12-12T10:00:00"),
             barberId: 2,
             serviceId: 999,
             role: UserRole.BARBER
@@ -363,7 +363,7 @@ describe("AppointmentService test", () => {
         }
 
         const data = {
-            date: new Date("2026-08-13T02:00:00"),
+            date: new Date("2026-12-13T02:00:00"),
             barberId: 2,
             serviceId: 999
         }
@@ -449,7 +449,7 @@ describe("AppointmentService test", () => {
         }
 
         const data = {
-            date: new Date("2026-08-12T10:10:00"),
+            date: new Date("2026-08-20T10:10:00"),
             barberId: 2,
             serviceId: 999
         }
@@ -466,26 +466,32 @@ describe("AppointmentService test", () => {
                 clientId: 20,
                 barberId: 2,
                 serviceId: 1,
-                date: new Date("2026-08-12T10:00:00"),
+                date: new Date("2026-08-20T10:00:00"),
                 status: AppointmentStatus.PENDING,
                 service: {
-                    id: 999,
+                    id: 1,
                     name: "corte",
                     price: new Prisma.Decimal(50),
                     duration: 30,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 }
-            }])
+            }] as any)
 
-        await expect(appointmentService.createAppointment(10, data))
-            .rejects.toThrow("O barbeiro já possui um agendamento nesse horário.")
+        await expect(
+            appointmentService.createAppointment(10, data)
+        ).rejects.toThrow(
+            "O barbeiro já possui um agendamento nesse horário."
+        )
 
         expect(serviceRepository.findById)
             .toHaveBeenCalledWith(999)
 
         expect(userRepository.findById)
             .toHaveBeenCalledWith(2)
+
+        expect(appointmentRepository.findByBarberAndDate)
+            .toHaveBeenCalled()
 
         expect(appointmentRepository.create)
             .not.toHaveBeenCalled()

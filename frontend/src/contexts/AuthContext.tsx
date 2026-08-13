@@ -18,12 +18,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const response = await loginAuth(email, password);
 
-        const { token, user } = response;
+        const { accessToken, user } = response;
 
-
+        console.log(response)
         setUser(user);
-        setToken(token);
-        setAccessToken(token)
+        setToken(accessToken);
+        setAccessToken(accessToken)
 
     };
 

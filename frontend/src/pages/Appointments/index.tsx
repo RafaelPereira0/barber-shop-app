@@ -30,9 +30,15 @@ export default function Appointments() {
         try {
             setLoading(true)
             const response = await getAppointments()
-
+            console.log(response)
             setAppointments(response)
-        } catch (err) {
+        } catch (err: any) {
+
+            console.error("STATUS:", err.response?.status)
+            console.error("DATA:", err.response?.data)
+            console.error("ERRO:", err.message)
+
+
             toast.error("Erro ao carregar agendamentos")
         } finally {
             setLoading(false)

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import { UserRole } from "@prisma/client"
 
-const JWT = process.env.JWT_SECRET
+const JWT = process.env.JWT_SECRET!
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
