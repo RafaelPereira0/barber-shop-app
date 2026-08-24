@@ -1,4 +1,4 @@
-import { api } from "./axios";7
+import { api } from "./axios";
 
 export async function forgotPass(email:string) {
     const response = await api.post('/password/forgot', {email})

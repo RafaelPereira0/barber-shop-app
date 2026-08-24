@@ -466,7 +466,7 @@ describe("AppointmentService test", () => {
                 clientId: 20,
                 barberId: 2,
                 serviceId: 1,
-                date: new Date("2026-08-20T10:00:00"),
+                date: new Date("2026-08-25T10:00:00"),
                 status: AppointmentStatus.PENDING,
                 service: {
                     id: 1,

@@ -32,7 +32,7 @@ export default function NewAppointments() {
 
                 setServices(serviceData)
                 setBarbers(barbersData)
-            } catch (err) {
+            } catch {
                 setError("Erro ao carregar dados iniciais.");
             }
         }
@@ -63,7 +63,7 @@ export default function NewAppointments() {
                     setSlots([]);
                 }
 
-            } catch (err) {
+            } catch {
                 setError("Erro ao buscar horários disponíveis.");
             } finally {
                 setLoadingSlots(false)

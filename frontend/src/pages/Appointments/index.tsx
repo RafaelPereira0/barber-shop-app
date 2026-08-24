@@ -189,7 +189,6 @@ export default function Appointments() {
                                     <tbody>
                                         {filteredAppointments.map((app) => {
                                             const bloqueadoPorTempo = isBotaoDesabilitado(app.date);
-                                            const isCancelado = app.status === "CANCELED";
 
                                             return (
                                                 <tr key={app.id}>

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import type {  UserFormData, UserType } from "../../types/user";
+import type { UserFormData, UserType } from "../../types/user";
 import { createBarber, updateUser } from "../../api/user.api";
 import styles from './barberForm.module.css'
 import { useEffect } from "react";
@@ -29,12 +29,13 @@ export default function BarberForm({ barber, onSuccess }: props) {
 
                 await updateUser(barber.id, payload);
             } else {
-                await createBarber(data)
+                await createBarber(data);
             }
-            reset(),
-                onSuccess()
-        } catch (err: any) {
-            toast.error(err.response.data.error || "Ocorreu um erro!");
+
+            reset();
+            onSuccess();
+        } catch {
+            toast.error("Ocorreu um erro!");
         }
     }
 
