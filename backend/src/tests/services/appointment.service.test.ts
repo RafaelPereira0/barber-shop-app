@@ -449,7 +449,7 @@ describe("AppointmentService test", () => {
         }
 
         const data = {
-            date: new Date("2026-08-20T10:10:00"),
+            date: new Date("2026-08-25T10:10:00"),
             barberId: 2,
             serviceId: 999
         }
