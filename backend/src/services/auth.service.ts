@@ -41,7 +41,7 @@ class AuthService{
         }
     }
 
-    async refresh(refreshToken: string): Promise<{newAccessToken: string, user: User}>{
+    async refresh(refreshToken: string): Promise<{newAccessToken: string}>{
         return new Promise((resolve, reject) => {
             jwt.verify(refreshToken, REFRESH_TOKEN!, async (err: any, decoded: any) => {
             if(err) return reject(new Error("Refresh inválido"))
@@ -53,12 +53,11 @@ class AuthService{
             }
 
             const newAccessToken = jwt.sign({
-                id: user.id, name: user.name, email: user.email, role: user.role
+                id: user.id, role: user.role
             }, JWT!, { expiresIn: '15m'})
 
             resolve({
-                newAccessToken,
-                user
+                newAccessToken
             }) 
         })
         })

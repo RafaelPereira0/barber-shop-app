@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { AppointmentType } from "../../types/appointment";
 import { toast } from "sonner";
 import { cancelAppointment, getAppointments, updateAppointmentStatus } from "../../api/appointment.api";
 import styles from './appointments.module.css'
 import { useAuth } from "../../hooks/useAuth";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type TabType = "TODAY" | "UPCOMING" | "HISTORY" | "ALL"
 
@@ -11,8 +12,16 @@ export default function Appointments() {
 
     const { user } = useAuth();
 
-    const [appointments, setAppointments] = useState<AppointmentType[]>([])
-    const [loading, setLoading] = useState(true)
+    const {
+        data: appointments = [],
+        isLoading,
+        isError
+    } = useQuery<AppointmentType[]>({
+        queryKey: ["appointments"],
+        queryFn: getAppointments
+    })
+
+    const queryClient = useQueryClient()
 
     const [activeTab, setActiveTab] = useState<TabType>("ALL")
 
@@ -25,25 +34,6 @@ export default function Appointments() {
 
         return diferencaEmHoras < 2;
     };
-
-    const fetchAppointments = async () => {
-        try {
-            setLoading(true)
-            const response = await getAppointments()
-            console.log(response)
-            setAppointments(response)
-        } catch (err: any) {
-
-            console.error("STATUS:", err.response?.status)
-            console.error("DATA:", err.response?.data)
-            console.error("ERRO:", err.message)
-
-
-            toast.error("Erro ao carregar agendamentos")
-        } finally {
-            setLoading(false)
-        }
-    }
 
     const getLocalDateString = (date: Date) => {
 
@@ -78,55 +68,54 @@ export default function Appointments() {
         })
     }
 
-    const handelCancelAppointment = async (id: number) => {
-        const toastId = toast.loading("Cancelando agendamento...")
+    const cancelMutation = useMutation({
+        mutationFn: (id: number) => cancelAppointment(id),
 
-        try {
-            await cancelAppointment(id)
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["appointments"]
+            })
 
-            setAppointments(prev => prev.map(app => app.id === id ? { ...app, status: "CANCELED" } : app))
-            toast.success("Agendamento cancelado com sucesso", { id: toastId })
-        } catch (err: any) {
-            toast.error(err.response.data.error || "Erro ao cancelar agendamento")
+            toast.success("Agendamento cancelado com sucesso!")
+        },
+
+        onError: (err: any) => {
+            toast.error("Erro ao cancelar agendamento!")
         }
+    })
+
+    const statusMutation = useMutation({
+        mutationFn: ({ id, status }: { id: number, status: "CONFIRMED" | "FINISHED" }) => updateAppointmentStatus(id, status),
+
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: ["appointments"]
+            })
+
+            if (variables.status === "CONFIRMED") toast.success("Agendamento confirmado com sucesso!")
+            if (variables.status === "FINISHED") toast.success("Agendamento finalizado com sucesso!")
+        },
+
+        onError: (err: any) => {
+            toast.error("Erro ao atualizar agendamento!")
+        }
+    })
+
+    const handelCancelAppointment = (id: number) => {
+        cancelMutation.mutate(id)
     }
 
     const handleConfirmAppointment = async (id: number) => {
-        const toastId = toast.loading("Confirmando agendamento...")
-
-        try {
-            await updateAppointmentStatus(id, "CONFIRMED")
-            setAppointments(prev => prev.map(app => app.id === id ? { ...app, status: "CONFIRMED" } : app))
-
-            toast.success("Agendamento confirmado com sucesso", { id: toastId })
-        } catch (err: any) {
-            toast.error(err.response.data.error || "Erro ao confirmar agendamento")
-        }
+        statusMutation.mutate({ id, status: "CONFIRMED" })
     }
 
     const handleFinishAppointment = async (id: number) => {
-        const toastId = toast.loading("Finalizando atendimento...");
-
-        try {
-            await updateAppointmentStatus(id, "FINISHED");
-
-            setAppointments(prev =>
-                prev.map(app => app.id === id ? { ...app, status: "FINISHED" } : app)
-            );
-
-            toast.success("Atendimento finalizado com sucesso!", { id: toastId });
-        } catch (err: any) {
-            toast.error(err.response?.data?.error || "Erro ao finalizar atendimento", { id: toastId });
-        }
+        statusMutation.mutate({ id, status: "FINISHED" })
     };
-
-    useEffect(() => {
-        fetchAppointments()
-    }, [])
 
     const filteredAppointments = getFilteredAppointments()
 
-    if (loading) return <p>Carregando seus agendamentos...</p>;
+    if (isLoading) return <p>Carregando seus agendamentos...</p>;
 
     return (
         <div className={styles.container}>

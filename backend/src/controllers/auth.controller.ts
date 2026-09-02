@@ -30,7 +30,7 @@ class AuthController {
 
             const result = await authService.refresh(refreshToken)
 
-            return res.status(200).json({accessToken: result.newAccessToken, user: result.user})
+            return res.status(200).json({accessToken: result.newAccessToken})
 
         } catch (err: any) {
             return res.status(401).json({ error: err.message })

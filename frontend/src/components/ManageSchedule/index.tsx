@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import styles from "./manageSchedule.module.css";
-import { getBarberAvailability, setBarberAvailability } from "../../api/availability.api";
-
+import {
+    getBarberAvailability,
+    setBarberAvailability
+} from "../../api/availability.api";
+import { useQuery } from "@tanstack/react-query";
 
 const DAYS_OF_WEEK = [
     { id: 1, name: "Segunda-feira" },
@@ -15,129 +18,207 @@ const DAYS_OF_WEEK = [
 ];
 
 interface LocalSchedule {
-    [key: number]: { startTime: string; endTime: string; isActive: boolean };
+    [key: number]: {
+        startTime: string;
+        endTime: string;
+        isActive: boolean;
+    };
 }
 
 export default function ManageSchedule() {
     const { user } = useAuth();
+
     const [schedule, setSchedule] = useState<LocalSchedule>({});
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+    const [message, setMessage] = useState<{
+        type: "success" | "error";
+        text: string;
+    } | null>(null);
 
-    async function loadSchedule() {
-        if (!user?.id) return;
-        try {
-            const data = await getBarberAvailability(user.id);
-            
+    const {
+        data: availability = [],
+        isLoading,
+        isError
+    } = useQuery({
+        queryKey: ["barberAvailability", user?.id],
+        queryFn: () => getBarberAvailability(user!.id),
+        enabled: !!user?.id
+    });
 
-            const initialSchedule: LocalSchedule = {};
-            DAYS_OF_WEEK.forEach(d => {
-                initialSchedule[d.id] = { startTime: "09:00", endTime: "18:00", isActive: false };
-            });
+    function createSchedule(data: typeof availability): LocalSchedule {
+        const initialSchedule: LocalSchedule = {};
 
+        DAYS_OF_WEEK.forEach((day) => {
+            initialSchedule[day.id] = {
+                startTime: "09:00",
+                endTime: "18:00",
+                isActive: false
+            };
+        });
 
-            data.forEach((item: any) => {
-                initialSchedule[item.dayOfWeek] = {
-                    startTime: item.startTime,
-                    endTime: item.endTime,
-                    isActive: true
-                };
-            });
+        data.forEach((item : any) => {
+            initialSchedule[item.dayOfWeek] = {
+                startTime: item.startTime,
+                endTime: item.endTime,
+                isActive: true
+            };
+        });
 
-            setSchedule(initialSchedule);
-        } catch (err) {
-            console.error("Erro ao carregar agenda", err);
-        } finally {
-            setLoading(false);
-        }
+        return initialSchedule;
     }
 
     useEffect(() => {
-        loadSchedule();
-    }, [user?.id]);
+        setSchedule(createSchedule(availability));
+    }, [availability]);
 
-
-    function handleTimeChange(dayId: number, field: "startTime" | "endTime", value: string) {
-        setSchedule(prev => ({
+    function handleTimeChange(
+        dayId: number,
+        field: "startTime" | "endTime",
+        value: string
+    ) {
+        setSchedule((prev) => ({
             ...prev,
-            [dayId]: { ...prev[dayId], [field]: value }
+            [dayId]: {
+                ...prev[dayId],
+                [field]: value
+            }
         }));
     }
 
-
     async function handleSaveDay(dayId: number) {
         if (!user?.id) return;
+
         setMessage(null);
 
         try {
             const dayData = schedule[dayId];
+
             await setBarberAvailability(user.id, {
                 dayOfWeek: dayId,
                 startTime: dayData.startTime,
                 endTime: dayData.endTime
             });
-            
 
-            setSchedule(prev => ({
+            setSchedule((prev) => ({
                 ...prev,
-                [dayId]: { ...prev[dayId], isActive: true }
+                [dayId]: {
+                    ...prev[dayId],
+                    isActive: true
+                }
             }));
 
-            setMessage({ type: "success", text: "Horário atualizado com sucesso!" });
+            setMessage({
+                type: "success",
+                text: "Horário atualizado com sucesso!"
+            });
         } catch (err: any) {
-            const errorMsg = err.response?.data?.error || "Erro ao salvar horário.";
-            setMessage({ type: "error", text: errorMsg });
+            const errorMsg =
+                err.response?.data?.error ||
+                "Erro ao salvar horário.";
+
+            setMessage({
+                type: "error",
+                text: errorMsg
+            });
         }
     }
 
-    if (loading) return <div className={styles.loading}>Carregando configurações da agenda...</div>;
+    if (isLoading) {
+        return (
+            <div className={styles.loading}>
+                Carregando configurações da agenda...
+            </div>
+        );
+    }
+
+    if (isError) {
+        return <div>Erro ao carregar agenda.</div>;
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1>Minha Agenda de Atendimento</h1>
-                <p>Configure os dias e horários que você estará disponível para receber agendamentos.</p>
+
+                <p>
+                    Configure os dias e horários que você estará
+                    disponível para receber agendamentos.
+                </p>
             </div>
 
             {message && (
-                <div className={message.type === "success" ? styles.successBox : styles.errorBox}>
+                <div
+                    className={
+                        message.type === "success"
+                            ? styles.successBox
+                            : styles.errorBox
+                    }
+                >
                     {message.text}
                 </div>
             )}
 
             <div className={styles.scheduleList}>
                 {DAYS_OF_WEEK.map((day) => {
-                    const dayConfig = schedule[day.id] || { startTime: "09:00", endTime: "18:00", isActive: false };
-                    
-                    return (
-                        <div key={day.id} className={`${styles.dayRow} ${dayConfig.isActive ? styles.rowActive : ""}`}>
-                            <div className={styles.dayInfo}>
-                                <span className={styles.dayName}>{day.name}</span>
+                    const dayConfig =
+                        schedule[day.id] || {
+                            startTime: "09:00",
+                            endTime: "18:00",
+                            isActive: false
+                        };
 
+                    return (
+                        <div
+                            key={day.id}
+                            className={`${styles.dayRow} ${
+                                dayConfig.isActive
+                                    ? styles.rowActive
+                                    : ""
+                            }`}
+                        >
+                            <div className={styles.dayInfo}>
+                                <span className={styles.dayName}>
+                                    {day.name}
+                                </span>
                             </div>
 
                             <div className={styles.timeInputs}>
                                 <div className={styles.inputGroup}>
                                     <label>Início:</label>
-                                    <input 
-                                        type="time" 
+
+                                    <input
+                                        type="time"
                                         value={dayConfig.startTime}
-                                        onChange={(e) => handleTimeChange(day.id, "startTime", e.target.value)}
+                                        onChange={(e) =>
+                                            handleTimeChange(
+                                                day.id,
+                                                "startTime",
+                                                e.target.value
+                                            )
+                                        }
                                     />
                                 </div>
 
                                 <div className={styles.inputGroup}>
                                     <label>Término:</label>
-                                    <input 
-                                        type="time" 
+
+                                    <input
+                                        type="time"
                                         value={dayConfig.endTime}
-                                        onChange={(e) => handleTimeChange(day.id, "endTime", e.target.value)}
+                                        onChange={(e) =>
+                                            handleTimeChange(
+                                                day.id,
+                                                "endTime",
+                                                e.target.value
+                                            )
+                                        }
                                     />
                                 </div>
 
-                                <button 
+                                <button
                                     className={styles.btnSave}
-                                    onClick={() => handleSaveDay(day.id)}
+                                    onClick={() =>
+                                        handleSaveDay(day.id)
+                                    }
                                 >
                                     Salvar Dia
                                 </button>

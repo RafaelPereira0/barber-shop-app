@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import type { ServiceType } from "../../types/service";
 import { deleteService, getServices } from "../../api/services.api";
 import ServiceCard from "../../components/ServiceCard";
@@ -6,24 +6,21 @@ import { useAuth } from "../../hooks/useAuth";
 import ServiceForm from "../../components/ServiceForm";
 import styles from "./services.module.css";
 import { showConfirmModal } from "../../utils/confirmModal";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Services() {
     const { user } = useAuth();
-    const [services, setServices] = useState<ServiceType[]>([]);
-    const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
 
-    async function loadServices() {
-        try {
-            const response = await getServices();
-            setServices(response);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false);
-        }
-    }
+    const {
+        data: services = [],
+        isLoading,
+        isError
+    } = useQuery<ServiceType[]>({
+        queryKey:["services"],
+        queryFn: getServices
+    })
 
     async function handleDelete(id: number) {
         const confirmed = await showConfirmModal({
@@ -36,7 +33,6 @@ export default function Services() {
 
         try {
             await deleteService(id);
-            loadServices();
         } catch (err) {
             console.log(err);
         }
@@ -47,11 +43,7 @@ export default function Services() {
         setShowForm(true);
     }
 
-    useEffect(() => {
-        loadServices();
-    }, []);
-
-    if (loading) return <div className={styles.loading}>Carregando serviços...</div>;
+    if (isLoading) return <div className={styles.loading}>Carregando serviços...</div>;
 
     return (
         <div className={styles.container}>
@@ -74,7 +66,6 @@ export default function Services() {
                         onSuccess={() => {
                             setShowForm(false);
                             setSelectedService(null);
-                            loadServices();
                         }}
                     />
                 </div>
